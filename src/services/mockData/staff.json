@@ -1,0 +1,182 @@
+[
+  {
+    "Id": 1,
+    "name": "Dr. Sarah Wilson",
+    "role": "Doctor",
+    "department": "Emergency",
+    "phone": "(555) 111-1111",
+    "email": "sarah.wilson@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "Morning"},
+      {"day": 2, "shift": "Morning"},
+      {"day": 3, "shift": "Morning"},
+      {"day": 4, "shift": "Morning"},
+      {"day": 5, "shift": "Morning"}
+    ]
+  },
+  {
+    "Id": 2,
+    "name": "Dr. Michael Chen",
+    "role": "Doctor",
+    "department": "Cardiology",
+    "phone": "(555) 222-2222",
+    "email": "michael.chen@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "All Day"},
+      {"day": 2, "shift": "All Day"},
+      {"day": 3, "shift": "All Day"},
+      {"day": 4, "shift": "All Day"},
+      {"day": 5, "shift": "Morning"}
+    ]
+  },
+  {
+    "Id": 3,
+    "name": "Dr. Jennifer Adams",
+    "role": "Surgeon",
+    "department": "Orthopedics",
+    "phone": "(555) 333-3333",
+    "email": "jennifer.adams@medflow.com",
+    "schedule": [
+      {"day": 2, "shift": "All Day"},
+      {"day": 3, "shift": "All Day"},
+      {"day": 4, "shift": "All Day"},
+      {"day": 5, "shift": "All Day"},
+      {"day": 6, "shift": "Morning"}
+    ]
+  },
+  {
+    "Id": 4,
+    "name": "Dr. Robert Kim",
+    "role": "Doctor",
+    "department": "Neurology",
+    "phone": "(555) 444-4444",
+    "email": "robert.kim@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "Afternoon"},
+      {"day": 2, "shift": "All Day"},
+      {"day": 3, "shift": "All Day"},
+      {"day": 4, "shift": "All Day"},
+      {"day": 5, "shift": "Morning"}
+    ]
+  },
+  {
+    "Id": 5,
+    "name": "Dr. Lisa Thompson",
+    "role": "Doctor",
+    "department": "Internal Medicine",
+    "phone": "(555) 555-5555",
+    "email": "lisa.thompson@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "Morning"},
+      {"day": 2, "shift": "Morning"},
+      {"day": 3, "shift": "All Day"},
+      {"day": 4, "shift": "All Day"},
+      {"day": 5, "shift": "All Day"}
+    ]
+  },
+  {
+    "Id": 6,
+    "name": "Dr. David Park",
+    "role": "Doctor",
+    "department": "Pediatrics",
+    "phone": "(555) 666-6666",
+    "email": "david.park@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "All Day"},
+      {"day": 2, "shift": "All Day"},
+      {"day": 3, "shift": "All Day"},
+      {"day": 4, "shift": "Morning"},
+      {"day": 5, "shift": "Morning"}
+    ]
+  },
+  {
+    "Id": 7,
+    "name": "Dr. Maria Gonzalez",
+    "role": "Surgeon",
+    "department": "Surgery",
+    "phone": "(555) 777-7777",
+    "email": "maria.gonzalez@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "All Day"},
+      {"day": 2, "shift": "All Day"},
+      {"day": 3, "shift": "All Day"},
+      {"day": 4, "shift": "All Day"},
+      {"day": 6, "shift": "Emergency"}
+    ]
+  },
+  {
+    "Id": 8,
+    "name": "Dr. James Lee",
+    "role": "Technician",
+    "department": "Radiology",
+    "phone": "(555) 888-8888",
+    "email": "james.lee@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "Morning"},
+      {"day": 2, "shift": "Afternoon"},
+      {"day": 3, "shift": "Morning"},
+      {"day": 4, "shift": "Afternoon"},
+      {"day": 5, "shift": "Morning"}
+    ]
+  },
+  {
+    "Id": 9,
+    "name": "Dr. Amanda Foster",
+    "role": "Doctor",
+    "department": "Obstetrics",
+    "phone": "(555) 999-9999",
+    "email": "amanda.foster@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "All Day"},
+      {"day": 2, "shift": "Morning"},
+      {"day": 3, "shift": "All Day"},
+      {"day": 4, "shift": "Morning"},
+      {"day": 5, "shift": "All Day"}
+    ]
+  },
+  {
+    "Id": 10,
+    "name": "Patricia Miller",
+    "role": "Nurse",
+    "department": "Emergency",
+    "phone": "(555) 101-0101",
+    "email": "patricia.miller@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "Night"},
+      {"day": 2, "shift": "Night"},
+      {"day": 3, "shift": "Night"},
+      {"day": 4, "shift": "Night"},
+      {"day": 5, "shift": "Night"}
+    ]
+  },
+  {
+    "Id": 11,
+    "name": "Steven Clark",
+    "role": "Nurse",
+    "department": "Cardiology",
+    "phone": "(555) 202-0202",
+    "email": "steven.clark@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "Morning"},
+      {"day": 2, "shift": "Morning"},
+      {"day": 3, "shift": "Afternoon"},
+      {"day": 4, "shift": "Afternoon"},
+      {"day": 5, "shift": "Morning"}
+    ]
+  },
+  {
+    "Id": 12,
+    "name": "Nancy White",
+    "role": "Administrator",
+    "department": "Administration",
+    "phone": "(555) 303-0303",
+    "email": "nancy.white@medflow.com",
+    "schedule": [
+      {"day": 1, "shift": "All Day"},
+      {"day": 2, "shift": "All Day"},
+      {"day": 3, "shift": "All Day"},
+      {"day": 4, "shift": "All Day"},
+      {"day": 5, "shift": "All Day"}
+    ]
+  }
+]
