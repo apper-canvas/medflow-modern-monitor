@@ -96,8 +96,8 @@ export const patientService = {
       })
 
       const params = {
-        records: [{
-          Name: patientData.name_c || patientData.name || '',
+records: [{
+          Name: patientData.name_c || '',
           name_c: patientData.name_c || patientData.name || '',
           date_of_birth_c: patientData.date_of_birth_c || patientData.dateOfBirth || '',
           gender_c: patientData.gender_c || patientData.gender || '',
