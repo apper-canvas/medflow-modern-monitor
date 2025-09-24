@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card"
-import Button from "@/components/atoms/Button"
-import SearchBar from "@/components/molecules/SearchBar"
-import StatusIndicator from "@/components/molecules/StatusIndicator"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import Empty from "@/components/ui/Empty"
-import ApperIcon from "@/components/ApperIcon"
-import { patientService } from "@/services/api/patientService"
-
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
+import { patientService } from "@/services/api/patientService";
+import PatientForm from "@/components/organisms/PatientForm";
+import ApperIcon from "@/components/ApperIcon";
+import SearchBar from "@/components/molecules/SearchBar";
+import StatusIndicator from "@/components/molecules/StatusIndicator";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
+import Button from "@/components/atoms/Button";
 const PatientTable = ({ searchTerm = "" }) => {
-  const [patients, setPatients] = useState([])
+const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [filteredPatients, setFilteredPatients] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [patientsPerPage] = useState(10)
-
+  const [showForm, setShowForm] = useState(false)
   const loadPatients = async () => {
     try {
       setLoading(true)
@@ -79,8 +79,8 @@ const PatientTable = ({ searchTerm = "" }) => {
     
     return age
   }
-
-  return (
+return (
+    <>
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
@@ -88,7 +88,11 @@ const PatientTable = ({ searchTerm = "" }) => {
             <ApperIcon name="Users" className="h-5 w-5 mr-2 text-primary-600" />
             Patient Directory ({filteredPatients.length})
           </CardTitle>
-          <Button variant="primary" size="sm">
+<Button 
+            variant="primary" 
+            size="sm"
+            onClick={() => setShowForm(true)}
+          >
             <ApperIcon name="Plus" className="h-4 w-4 mr-2" />
             Add Patient
           </Button>
@@ -196,8 +200,19 @@ const PatientTable = ({ searchTerm = "" }) => {
             </div>
           </div>
         )}
-      </CardContent>
+</CardContent>
     </Card>
+    
+    {showForm && (
+      <PatientForm
+        onClose={() => setShowForm(false)}
+        onPatientAdded={() => {
+          loadPatients()
+          setShowForm(false)
+        }}
+      />
+    )}
+    </>
   )
 }
 
