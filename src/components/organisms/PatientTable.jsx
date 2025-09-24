@@ -180,8 +180,7 @@ return (
                     </td>
                   </tr>
                 )
-              })}
-              ))}
+})}
             </tbody>
           </table>
         </div>

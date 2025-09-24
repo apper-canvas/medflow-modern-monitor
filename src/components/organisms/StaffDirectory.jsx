@@ -8,6 +8,8 @@ import Empty from "@/components/ui/Empty";
 import Error from "@/components/ui/Error";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
+import Staff from "@/components/pages/Staff";
+import Departments from "@/components/pages/Departments";
 
 const StaffDirectory = ({ searchTerm = "" }) => {
   const [staff, setStaff] = useState([])
@@ -123,8 +125,8 @@ useEffect(() => {
       </Card>
 
       {/* Staff Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-{filteredStaff.map((member) => {
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredStaff.map((member) => {
           const name = member.name_c || member.Name || 'Unknown'
           const role = member.role_c || ''
           const department = member.department_c || ''
@@ -219,12 +221,12 @@ useEffect(() => {
                   View Profile
                 </Button>
               </div>
-            </CardContent>
+</CardContent>
           </Card>
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 export default StaffDirectory
