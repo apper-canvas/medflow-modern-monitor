@@ -1,9 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
+import { useSelector } from 'react-redux'
 import Button from "@/components/atoms/Button"
 import SearchBar from "@/components/molecules/SearchBar"
 import ApperIcon from "@/components/ApperIcon"
+import { AuthContext } from "../../App"
 
 const Header = ({ onMenuClick, onSearch }) => {
+  const { logout } = useContext(AuthContext)
+  const { user, isAuthenticated } = useSelector((state) => state.user)
+
   return (
     <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between h-16">
@@ -46,6 +51,29 @@ const Header = ({ onMenuClick, onSearch }) => {
             <ApperIcon name="Plus" className="h-4 w-4 mr-2" />
             Quick Add
           </Button>
+
+          {/* User Info and Logout */}
+          {isAuthenticated && (
+            <div className="flex items-center space-x-3">
+              <div className="hidden md:block text-right">
+                <p className="text-sm font-medium text-gray-900">
+                  {user?.firstName} {user?.lastName}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {user?.emailAddress}
+                </p>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={logout}
+                className="flex items-center"
+              >
+                <ApperIcon name="LogOut" className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </header>

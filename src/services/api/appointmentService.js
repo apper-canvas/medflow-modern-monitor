@@ -1,50 +1,226 @@
-import appointmentsData from "@/services/mockData/appointments.json"
-
-const delay = () => new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 200))
+import { toast } from 'react-toastify'
 
 export const appointmentService = {
   async getAll() {
-    await delay()
-    return [...appointmentsData]
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "patient_id_c"}},
+          {"field": {"Name": "doctor_id_c"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "time_c"}},
+          {"field": {"Name": "department_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "type_c"}}
+        ]
+      }
+
+      const response = await apperClient.fetchRecords('appointment_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return []
+      }
+
+      return response.data || []
+    } catch (error) {
+      console.error("Error fetching appointments:", error?.response?.data?.message || error)
+      toast.error("Failed to load appointments. Please try again.")
+      return []
+    }
   },
 
   async getById(id) {
-    await delay()
-    const appointment = appointmentsData.find(a => a.Id === parseInt(id))
-    if (!appointment) {
-      throw new Error("Appointment not found")
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "patient_id_c"}},
+          {"field": {"Name": "doctor_id_c"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "time_c"}},
+          {"field": {"Name": "department_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "type_c"}}
+        ]
+      }
+
+      const response = await apperClient.getRecordById('appointment_c', parseInt(id), params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return null
+      }
+
+      return response.data
+    } catch (error) {
+      console.error(`Error fetching appointment ${id}:`, error?.response?.data?.message || error)
+      toast.error("Failed to load appointment. Please try again.")
+      return null
     }
-    return { ...appointment }
   },
 
   async create(appointmentData) {
-    await delay()
-    const newId = Math.max(...appointmentsData.map(a => a.Id)) + 1
-    const newAppointment = {
-      Id: newId,
-      ...appointmentData
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        records: [{
+          Name: `Appointment - ${appointmentData.date_c || appointmentData.date || ''} ${appointmentData.time_c || appointmentData.time || ''}`,
+          patient_id_c: appointmentData.patient_id_c || parseInt(appointmentData.patientId) || null,
+          doctor_id_c: appointmentData.doctor_id_c || parseInt(appointmentData.doctorId) || null,
+          date_c: appointmentData.date_c || appointmentData.date || '',
+          time_c: appointmentData.time_c || appointmentData.time || '',
+          department_c: appointmentData.department_c || appointmentData.department || '',
+          status_c: appointmentData.status_c || appointmentData.status || 'scheduled',
+          notes_c: appointmentData.notes_c || appointmentData.notes || '',
+          type_c: appointmentData.type_c || appointmentData.type || ''
+        }]
+      }
+
+      const response = await apperClient.createRecord('appointment_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return null
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success)
+        const failed = response.results.filter(r => !r.success)
+
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} appointment records:`, failed)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+
+        return successful.length > 0 ? successful[0].data : null
+      }
+
+      return null
+    } catch (error) {
+      console.error("Error creating appointment:", error?.response?.data?.message || error)
+      toast.error("Failed to create appointment. Please try again.")
+      return null
     }
-    appointmentsData.push(newAppointment)
-    return { ...newAppointment }
   },
 
   async update(id, appointmentData) {
-    await delay()
-    const index = appointmentsData.findIndex(a => a.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error("Appointment not found")
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          Name: `Appointment - ${appointmentData.date_c || appointmentData.date || ''} ${appointmentData.time_c || appointmentData.time || ''}`,
+          patient_id_c: appointmentData.patient_id_c || parseInt(appointmentData.patientId) || null,
+          doctor_id_c: appointmentData.doctor_id_c || parseInt(appointmentData.doctorId) || null,
+          date_c: appointmentData.date_c || appointmentData.date || '',
+          time_c: appointmentData.time_c || appointmentData.time || '',
+          department_c: appointmentData.department_c || appointmentData.department || '',
+          status_c: appointmentData.status_c || appointmentData.status || 'scheduled',
+          notes_c: appointmentData.notes_c || appointmentData.notes || '',
+          type_c: appointmentData.type_c || appointmentData.type || ''
+        }]
+      }
+
+      const response = await apperClient.updateRecord('appointment_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return null
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success)
+        const failed = response.results.filter(r => !r.success)
+
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} appointment records:`, failed)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+
+        return successful.length > 0 ? successful[0].data : null
+      }
+
+      return null
+    } catch (error) {
+      console.error("Error updating appointment:", error?.response?.data?.message || error)
+      toast.error("Failed to update appointment. Please try again.")
+      return null
     }
-    appointmentsData[index] = { ...appointmentsData[index], ...appointmentData }
-    return { ...appointmentsData[index] }
   },
 
   async delete(id) {
-    await delay()
-    const index = appointmentsData.findIndex(a => a.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error("Appointment not found")
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        RecordIds: [parseInt(id)]
+      }
+
+      const response = await apperClient.deleteRecord('appointment_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return false
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success)
+        const failed = response.results.filter(r => !r.success)
+
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} appointment records:`, failed)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+
+        return successful.length > 0
+      }
+
+      return false
+    } catch (error) {
+      console.error("Error deleting appointment:", error?.response?.data?.message || error)
+      toast.error("Failed to delete appointment. Please try again.")
+      return false
     }
-    const deletedAppointment = appointmentsData.splice(index, 1)[0]
-    return { ...deletedAppointment }
   }
 }

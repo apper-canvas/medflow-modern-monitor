@@ -8,44 +8,47 @@ import { patientService } from '@/services/api/patientService'
 import { toast } from 'react-toastify'
 
 const PatientForm = ({ onClose, onPatientAdded }) => {
-  const [loading, setLoading] = useState(false)
+const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    dateOfBirth: '',
-    address: '',
-    emergencyContact: '',
-    insuranceProvider: '',
-    insuranceNumber: ''
+    name_c: '',
+    email_c: '',
+    phone_c: '',
+    date_of_birth_c: '',
+    address_c: '',
+    emergency_contact_c: '',
+    insurance_provider_c: '',
+    insurance_number_c: '',
+    gender_c: '',
+    department_c: '',
+    status_c: 'admitted'
   })
   const [errors, setErrors] = useState({})
 
-  const validateForm = () => {
+const validateForm = () => {
     const newErrors = {}
     
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required'
+    if (!formData.name_c.trim()) {
+      newErrors.name_c = 'Name is required'
     }
     
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email format is invalid'
+    if (!formData.email_c.trim()) {
+      newErrors.email_c = 'Email is required'
+    } else if (!/\S+@\S+\.\S+/.test(formData.email_c)) {
+      newErrors.email_c = 'Email format is invalid'
     }
     
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required'
-    } else if (!/^\+?[\d\s-()]+$/.test(formData.phone)) {
-      newErrors.phone = 'Phone format is invalid'
+    if (!formData.phone_c.trim()) {
+      newErrors.phone_c = 'Phone number is required'
+    } else if (!/^\+?[\d\s-()]+$/.test(formData.phone_c)) {
+      newErrors.phone_c = 'Phone format is invalid'
     }
     
-    if (!formData.dateOfBirth) {
-      newErrors.dateOfBirth = 'Date of birth is required'
+    if (!formData.date_of_birth_c) {
+      newErrors.date_of_birth_c = 'Date of birth is required'
     }
     
-    if (!formData.address.trim()) {
-      newErrors.address = 'Address is required'
+    if (!formData.address_c.trim()) {
+      newErrors.address_c = 'Address is required'
     }
 
     setErrors(newErrors)
@@ -81,16 +84,19 @@ const PatientForm = ({ onClose, onPatientAdded }) => {
       await patientService.create(formData)
       toast.success('Patient added successfully!')
       
-      // Reset form
+// Reset form
       setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        dateOfBirth: '',
-        address: '',
-        emergencyContact: '',
-        insuranceProvider: '',
-        insuranceNumber: ''
+        name_c: '',
+        email_c: '',
+        phone_c: '',
+        date_of_birth_c: '',
+        address_c: '',
+        emergency_contact_c: '',
+        insurance_provider_c: '',
+        insurance_number_c: '',
+        gender_c: '',
+        department_c: '',
+        status_c: 'admitted'
       })
       
       if (onPatientAdded) {
@@ -131,102 +137,140 @@ const PatientForm = ({ onClose, onPatientAdded }) => {
           
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-medium">
+                  <Label htmlFor="name_c" className="text-sm font-medium">
                     Full Name *
                   </Label>
                   <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
+                    id="name_c"
+                    name="name_c"
+                    value={formData.name_c}
                     onChange={handleInputChange}
                     placeholder="Enter patient's full name"
-                    className={errors.name ? 'border-red-500' : ''}
+                    className={errors.name_c ? 'border-red-500' : ''}
                   />
-                  {errors.name && (
-                    <p className="text-red-500 text-sm">{errors.name}</p>
+                  {errors.name_c && (
+                    <p className="text-red-500 text-sm">{errors.name_c}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">
+                  <Label htmlFor="email_c" className="text-sm font-medium">
                     Email Address *
                   </Label>
                   <Input
-                    id="email"
-                    name="email"
+                    id="email_c"
+                    name="email_c"
                     type="email"
-                    value={formData.email}
+                    value={formData.email_c}
                     onChange={handleInputChange}
                     placeholder="patient@example.com"
-                    className={errors.email ? 'border-red-500' : ''}
+                    className={errors.email_c ? 'border-red-500' : ''}
                   />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm">{errors.email}</p>
+                  {errors.email_c && (
+                    <p className="text-red-500 text-sm">{errors.email_c}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-sm font-medium">
+                  <Label htmlFor="phone_c" className="text-sm font-medium">
                     Phone Number *
                   </Label>
                   <Input
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
+                    id="phone_c"
+                    name="phone_c"
+                    value={formData.phone_c}
                     onChange={handleInputChange}
                     placeholder="+1 (555) 123-4567"
-                    className={errors.phone ? 'border-red-500' : ''}
+                    className={errors.phone_c ? 'border-red-500' : ''}
                   />
-                  {errors.phone && (
-                    <p className="text-red-500 text-sm">{errors.phone}</p>
+                  {errors.phone_c && (
+                    <p className="text-red-500 text-sm">{errors.phone_c}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="dateOfBirth" className="text-sm font-medium">
+                  <Label htmlFor="date_of_birth_c" className="text-sm font-medium">
                     Date of Birth *
                   </Label>
                   <Input
-                    id="dateOfBirth"
-                    name="dateOfBirth"
+                    id="date_of_birth_c"
+                    name="date_of_birth_c"
                     type="date"
-                    value={formData.dateOfBirth}
+                    value={formData.date_of_birth_c}
                     onChange={handleInputChange}
-                    className={errors.dateOfBirth ? 'border-red-500' : ''}
+                    className={errors.date_of_birth_c ? 'border-red-500' : ''}
                   />
-                  {errors.dateOfBirth && (
-                    <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>
+                  {errors.date_of_birth_c && (
+                    <p className="text-red-500 text-sm">{errors.date_of_birth_c}</p>
                   )}
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="gender_c" className="text-sm font-medium">
+                    Gender *
+                  </Label>
+                  <select
+                    id="gender_c"
+                    name="gender_c"
+                    value={formData.gender_c}
+                    onChange={handleInputChange}
+                    className="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="status_c" className="text-sm font-medium">
+                    Status
+                  </Label>
+                  <select
+                    id="status_c"
+                    name="status_c"
+                    value={formData.status_c}
+                    onChange={handleInputChange}
+                    className="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  >
+                    <option value="admitted">Admitted</option>
+                    <option value="discharged">Discharged</option>
+                    <option value="emergency">Emergency</option>
+                    <option value="outpatient">Outpatient</option>
+                  </select>
+                </div>
+              </div>
+
               <div className="space-y-2">
-                <Label htmlFor="address" className="text-sm font-medium">
+                <Label htmlFor="address_c" className="text-sm font-medium">
                   Address *
                 </Label>
                 <Input
-                  id="address"
-                  name="address"
-                  value={formData.address}
+                  id="address_c"
+                  name="address_c"
+                  value={formData.address_c}
                   onChange={handleInputChange}
                   placeholder="123 Main St, City, State 12345"
-                  className={errors.address ? 'border-red-500' : ''}
+                  className={errors.address_c ? 'border-red-500' : ''}
                 />
-                {errors.address && (
-                  <p className="text-red-500 text-sm">{errors.address}</p>
+                {errors.address_c && (
+                  <p className="text-red-500 text-sm">{errors.address_c}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="emergencyContact" className="text-sm font-medium">
+                <Label htmlFor="emergency_contact_c" className="text-sm font-medium">
                   Emergency Contact
                 </Label>
                 <Input
-                  id="emergencyContact"
-                  name="emergencyContact"
-                  value={formData.emergencyContact}
+                  id="emergency_contact_c"
+                  name="emergency_contact_c"
+                  value={formData.emergency_contact_c}
                   onChange={handleInputChange}
                   placeholder="Emergency contact name and phone"
                 />
@@ -234,26 +278,26 @@ const PatientForm = ({ onClose, onPatientAdded }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="insuranceProvider" className="text-sm font-medium">
+                  <Label htmlFor="insurance_provider_c" className="text-sm font-medium">
                     Insurance Provider
                   </Label>
                   <Input
-                    id="insuranceProvider"
-                    name="insuranceProvider"
-                    value={formData.insuranceProvider}
+                    id="insurance_provider_c"
+                    name="insurance_provider_c"
+                    value={formData.insurance_provider_c}
                     onChange={handleInputChange}
                     placeholder="Insurance company name"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="insuranceNumber" className="text-sm font-medium">
+                  <Label htmlFor="insurance_number_c" className="text-sm font-medium">
                     Insurance Number
                   </Label>
                   <Input
-                    id="insuranceNumber"
-                    name="insuranceNumber"
-                    value={formData.insuranceNumber}
+                    id="insurance_number_c"
+                    name="insurance_number_c"
+                    value={formData.insurance_number_c}
                     onChange={handleInputChange}
                     placeholder="Policy number"
                   />

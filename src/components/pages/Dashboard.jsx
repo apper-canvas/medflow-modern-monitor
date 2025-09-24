@@ -50,42 +50,57 @@ const Dashboard = () => {
   if (error) return <Error message={error} onRetry={loadDashboardData} />
 
   // Calculate dashboard statistics
-  const totalBeds = departments.reduce((sum, dept) => sum + dept.totalBeds, 0)
-  const occupiedBeds = departments.reduce((sum, dept) => sum + dept.occupiedBeds, 0)
+const totalBeds = departments.reduce((sum, dept) => sum + (dept.total_beds_c || 0), 0)
+  const occupiedBeds = departments.reduce((sum, dept) => sum + (dept.occupied_beds_c || 0), 0)
   const availableBeds = totalBeds - occupiedBeds
   const occupancyRate = totalBeds > 0 ? Math.round((occupiedBeds / totalBeds) * 100) : 0
 
   const todayAppointments = appointments.filter(apt => {
     const today = new Date().toISOString().split("T")[0]
-    return apt.date === today
+    const appointmentDate = apt.date_c || apt.date || ''
+    return appointmentDate === today
   })
 
-  const emergencyPatients = patients.filter(patient => patient.status === "emergency").length
+  const emergencyPatients = patients.filter(patient => {
+    const status = patient.status_c || patient.status || ''
+    return status === "emergency"
+  }).length
 
-  const getRecentActivities = () => {
+const getRecentActivities = () => {
     const activities = []
     
     // Recent admissions
     const recentAdmissions = patients
-      .filter(p => p.status === "admitted")
+      .filter(p => {
+        const status = p.status_c || p.status || ''
+        return status === "admitted"
+      })
       .slice(0, 3)
-      .map(p => ({
-        type: "admission",
-        message: `${p.name} admitted to ${p.department}`,
-        time: "2 hours ago",
-        icon: "UserPlus",
-        color: "text-green-600"
-      }))
+      .map(p => {
+        const name = p.name_c || p.Name || 'Unknown Patient'
+        const department = p.department_c || p.department || 'Unknown Department'
+        return {
+          type: "admission",
+          message: `${name} admitted to ${department}`,
+          time: "2 hours ago",
+          icon: "UserPlus",
+          color: "text-green-600"
+        }
+      })
 
     // Today's appointments
     const upcomingAppointments = todayAppointments
       .slice(0, 2)
       .map(apt => {
-        const patient = patients.find(p => p.Id === parseInt(apt.patientId))
+        const patientId = apt.patient_id_c || apt.patientId
+        const patient = patients.find(p => p.Id === parseInt(patientId))
+        const patientName = patient ? (patient.name_c || patient.Name) : "Patient"
+        const appointmentTime = apt.time_c || apt.time || ''
+        
         return {
           type: "appointment",
-          message: `Appointment scheduled for ${patient?.name || "Patient"}`,
-          time: `Today at ${apt.time}`,
+          message: `Appointment scheduled for ${patientName}`,
+          time: `Today at ${appointmentTime}`,
           icon: "Calendar",
           color: "text-blue-600"
         }
@@ -206,8 +221,14 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="space-y-3">
-                {todayAppointments.slice(0, 5).map((appointment) => {
-                  const patient = patients.find(p => p.Id === parseInt(appointment.patientId))
+{todayAppointments.slice(0, 5).map((appointment) => {
+                  const patientId = appointment.patient_id_c || appointment.patientId
+                  const patient = patients.find(p => p.Id === parseInt(patientId))
+                  const patientName = patient ? (patient.name_c || patient.Name) : "Unknown Patient"
+                  const department = appointment.department_c || appointment.department || ''
+                  const time = appointment.time_c || appointment.time || ''
+                  const status = appointment.status_c || appointment.status || ''
+                  
                   return (
                     <div key={appointment.Id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div className="flex items-center">
@@ -215,11 +236,11 @@ const Dashboard = () => {
                           <ApperIcon name="Clock" className="h-5 w-5 text-white" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{patient?.name || "Unknown Patient"}</p>
-                          <p className="text-sm text-gray-600">{appointment.department} • {formatTime(appointment.time)}</p>
+                          <p className="font-medium text-gray-900">{patientName}</p>
+                          <p className="text-sm text-gray-600">{department} • {formatTime(time)}</p>
                         </div>
                       </div>
-                      <StatusIndicator status={appointment.status} type="appointment" />
+                      <StatusIndicator status={status} type="appointment" />
                     </div>
                   )
                 })}
@@ -275,20 +296,21 @@ const Dashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {departments.map((department) => {
-              const occupancyRate = department.totalBeds > 0 
-                ? Math.round((department.occupiedBeds / department.totalBeds) * 100) 
-                : 0
+{departments.map((department) => {
+              const name = department.name_c || department.Name || 'Unknown'
+              const totalBeds = department.total_beds_c || 0
+              const occupiedBeds = department.occupied_beds_c || 0
+              const occupancyRate = totalBeds > 0 ? Math.round((occupiedBeds / totalBeds) * 100) : 0
               const statusColor = occupancyRate >= 90 ? "danger" : occupancyRate >= 70 ? "warning" : "success"
               
               return (
                 <div key={department.Id} className="p-4 border border-gray-200 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-medium text-gray-900">{department.name}</h3>
+                    <h3 className="font-medium text-gray-900">{name}</h3>
                     <StatusIndicator status={occupancyRate >= 90 ? "Full" : "Available"} type="bed" />
                   </div>
                   <div className="text-sm text-gray-600">
-                    <p>Beds: {department.occupiedBeds}/{department.totalBeds}</p>
+                    <p>Beds: {occupiedBeds}/{totalBeds}</p>
                     <p>Occupancy: {occupancyRate}%</p>
                   </div>
                   <div className="mt-2 w-full bg-gray-200 rounded-full h-2">

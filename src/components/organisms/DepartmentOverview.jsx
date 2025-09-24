@@ -40,8 +40,11 @@ const DepartmentOverview = () => {
   if (error) return <Error message={error} onRetry={loadData} />
   if (departments.length === 0) return <Empty message="No departments found" />
 
-  const getStaffCount = (departmentName) => {
-    return staff.filter(member => member.department === departmentName).length
+const getStaffCount = (departmentName) => {
+    return staff.filter(member => {
+      const memberDepartment = member.department_c || ''
+      return memberDepartment === departmentName
+    }).length
   }
 
   const getOccupancyRate = (occupied, total) => {
@@ -66,15 +69,19 @@ const DepartmentOverview = () => {
     <div className="space-y-6">
       {/* Department Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {departments.map((department) => {
-          const occupancyRate = getOccupancyRate(department.occupiedBeds, department.totalBeds)
-          const staffCount = getStaffCount(department.name)
+{departments.map((department) => {
+          const name = department.name_c || department.Name || 'Unknown'
+          const totalBeds = department.total_beds_c || 0
+          const occupiedBeds = department.occupied_beds_c || 0
+          const headOfDepartment = department.head_of_department_c || 'Not Assigned'
+          const occupancyRate = getOccupancyRate(occupiedBeds, totalBeds)
+          const staffCount = getStaffCount(name)
           
           return (
             <Card key={department.Id} className="hover:shadow-lg transition-shadow duration-200">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg text-gray-900">{department.name}</CardTitle>
+                  <CardTitle className="text-lg text-gray-900">{name}</CardTitle>
                   <Badge variant={getOccupancyColor(occupancyRate)}>
                     {occupancyRate}% Full
                   </Badge>
@@ -83,14 +90,14 @@ const DepartmentOverview = () => {
               <CardContent>
                 <div className="space-y-4">
                   {/* Bed Capacity */}
-                  <div className={`p-4 rounded-lg border-2 ${getBedStatusColor(department.occupiedBeds, department.totalBeds)}`}>
+                  <div className={`p-4 rounded-lg border-2 ${getBedStatusColor(occupiedBeds, totalBeds)}`}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center">
                         <ApperIcon name="Bed" className="h-5 w-5 mr-2 text-gray-700" />
                         <span className="font-medium text-gray-900">Bed Capacity</span>
                       </div>
                       <span className="text-2xl font-bold text-gray-900">
-                        {department.occupiedBeds}/{department.totalBeds}
+                        {occupiedBeds}/{totalBeds}
                       </span>
                     </div>
                     
@@ -106,8 +113,8 @@ const DepartmentOverview = () => {
                     </div>
                     
                     <div className="flex justify-between text-sm text-gray-600">
-                      <span>Available: {department.totalBeds - department.occupiedBeds}</span>
-                      <span>Occupied: {department.occupiedBeds}</span>
+                      <span>Available: {totalBeds - occupiedBeds}</span>
+                      <span>Occupied: {occupiedBeds}</span>
                     </div>
                   </div>
 
@@ -128,7 +135,7 @@ const DepartmentOverview = () => {
                       </div>
                       <div>
                         <p className="text-xs font-medium text-gray-600 uppercase">Department Head</p>
-                        <p className="font-medium text-gray-900">{department.headOfDepartment}</p>
+                        <p className="font-medium text-gray-900">{headOfDepartment}</p>
                       </div>
                     </div>
                   </div>
@@ -168,16 +175,16 @@ const DepartmentOverview = () => {
               <div className="text-sm font-medium text-blue-800">Total Departments</div>
             </div>
             
-            <div className="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
+<div className="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
               <div className="text-3xl font-bold text-green-900 mb-1">
-                {departments.reduce((sum, dept) => sum + dept.totalBeds, 0)}
+                {departments.reduce((sum, dept) => sum + (dept.total_beds_c || 0), 0)}
               </div>
               <div className="text-sm font-medium text-green-800">Total Beds</div>
             </div>
             
             <div className="text-center p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg">
               <div className="text-3xl font-bold text-yellow-900 mb-1">
-                {departments.reduce((sum, dept) => sum + dept.occupiedBeds, 0)}
+                {departments.reduce((sum, dept) => sum + (dept.occupied_beds_c || 0), 0)}
               </div>
               <div className="text-sm font-medium text-yellow-800">Occupied Beds</div>
             </div>
