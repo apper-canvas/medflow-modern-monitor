@@ -199,11 +199,12 @@ useEffect(() => {
                               {day}
                             </span>
                           )
-                        })}
+})}
                       </div>
                     </div>
                   )}
-              </div>
+                </div>
+              </CardContent>
 
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
                 <div className="flex space-x-2">
@@ -217,13 +218,13 @@ useEffect(() => {
                     <ApperIcon name="Calendar" className="h-4 w-4" />
                   </Button>
                 </div>
-                <Button variant="primary" size="sm">
+<Button variant="primary" size="sm">
                   View Profile
                 </Button>
               </div>
-</CardContent>
-          </Card>
-        ))}
+            </Card>
+          )
+        })}
       </div>
     </div>
   );
